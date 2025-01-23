@@ -1,0 +1,60 @@
+package com.westmonroe.loansyndication.querydef.activity;
+
+public class ActivityQueryDef {
+
+    private ActivityQueryDef() {
+        throw new IllegalStateException("Utility class");
+    }
+
+    public static final String SELECT_ACTIVITY = """
+        SELECT AI.ACTIVITY_ID
+             , AI.DEAL_ID
+             , DI.DEAL_UUID
+             , DI.DEAL_NAME
+             , EI.EVENT_ID
+             , EI.EVENT_UUID
+             , EI.EVENT_NAME
+             , EI.LAUNCH_DATE
+             , II.INSTITUTION_ID
+             , II.INSTITUTION_UUID
+             , II.INSTITUTION_NAME
+             , AI.PARTICIPANT_ID
+             , PII.INSTITUTION_ID AS PART_INSTITUTION_ID
+             , PII.INSTITUTION_UUID AS PART_INSTITUTION_UUID
+             , PII.INSTITUTION_NAME AS PART_INSTITUTION_NAME
+             , AI.ACTIVITY_TYPE_ID
+             , ATD.ACTIVITY_TYPE_NAME
+             , ACD.ACTIVITY_CATEGORY_ID
+             , ACD.ACTIVITY_CATEGORY_NAME
+             , AI.ACTIVITY_JSON
+             , AI.SOURCE_CD
+             , AI.CREATED_BY_ID
+             , UIC.USER_UUID AS CREATED_BY_UUID
+             , UIC.FIRST_NAME AS CREATED_BY_FIRST_NAME
+             , UIC.LAST_NAME AS CREATED_BY_LAST_NAME
+             , UIC.EMAIL_ADDR AS CREATED_BY_EMAIL_ADDR
+             , UIC.PASSWORD_DESC AS CREATED_BY_PASSWORD_DESC
+             , UIC.ACTIVE_IND AS CREATED_BY_ACTIVE_IND
+             , UII.INSTITUTION_ID AS CREATED_BY_INSTITUTION_ID
+             , UII.INSTITUTION_UUID AS CREATED_BY_INSTITUTION_UUID
+             , UII.INSTITUTION_NAME AS CREATED_BY_INSTITUTION_NAME
+             , AI.CREATED_DATE
+          FROM ACTIVITY_INFO AI LEFT JOIN DEAL_INFO DI
+            ON AI.DEAL_ID = DI.DEAL_ID LEFT JOIN EVENT_INFO EI
+            ON DI.DEAL_ID = EI.DEAL_ID AND EI.CLOSE_DATE IS NULL LEFT JOIN INSTITUTION_INFO II
+            ON DI.ORIGINATOR_ID = II.INSTITUTION_ID LEFT JOIN INSTITUTION_INFO PII
+            ON AI.PARTICIPANT_ID = PII.INSTITUTION_ID LEFT JOIN ACTIVITY_TYPE_DEF ATD
+            ON AI.ACTIVITY_TYPE_ID = ATD.ACTIVITY_TYPE_ID LEFT JOIN ACTIVITY_CATEGORY_DEF ACD
+            ON ATD.ACTIVITY_CATEGORY_ID = ACD.ACTIVITY_CATEGORY_ID LEFT JOIN USER_INFO UIC
+            ON AI.CREATED_BY_ID = UIC.USER_ID LEFT JOIN INSTITUTION_INFO UII
+            ON UIC.INSTITUTION_ID = UII.INSTITUTION_ID
+       """;
+    public static final String INSERT_ACTIVITY = """
+        INSERT INTO ACTIVITY_INFO
+             ( DEAL_ID, PARTICIPANT_ID, ACTIVITY_TYPE_ID, ACTIVITY_JSON, SOURCE_CD, CREATED_BY_ID )
+               VALUES
+             ( ?, ?, ?, ?::JSONB, ?, ? )
+        """;
+    public static final String DELETE_ACTIVITY = "DELETE FROM ACTIVITY_INFO";
+
+}

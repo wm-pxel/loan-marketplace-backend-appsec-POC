@@ -1,0 +1,5 @@
+environment = "qa"
+profile     = "lm_qa"
+region      = "us-east-1"
+sub_domain  = "qa"
+domain      = "app.laminafs.com"

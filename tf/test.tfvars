@@ -1,0 +1,5 @@
+environment = "test"
+profile     = "lm_test"
+region      = "us-east-1"
+sub_domain  = "test"
+domain      = "app.laminafs.com"

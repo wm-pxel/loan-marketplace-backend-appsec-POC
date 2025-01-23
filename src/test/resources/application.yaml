@@ -1,0 +1,51 @@
+lamina:
+  base-url: http://localhost:8080/
+  environment: test
+  email-notification:
+    process-interval: "-"
+  email-service:
+    send-address: noreply@app.laminafs.com
+    enabled: false
+    filter: true
+  lambda:
+    enabled: false
+    dp-function-name: lamina-fileManagerService
+    dd-function-name: clientFileDownloadService
+  cognito:
+    user-pool-id: us-east-1_1upDqvXcC
+
+spring:
+  profiles:
+    active: test
+  flyway:
+    enabled: true
+    locations: classpath:/db/migration,classpath:/test/db/migration
+    clean-disabled: false
+  datasource:
+    url: jdbc:tc:postgresql:15.5:///test_database
+    username: sa
+    password: password
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: https://idp.example.com/issuer
+          jwk-set-uri: https://idp.example.com/jwkSet
+
+logging:
+  level:
+    root: info        # Set this as needed for debugging
+
+s3:
+  file:
+    max-file-size: 10MB
+    max-request-size: 10MB
+    upload:
+      access:
+        key:
+          id: XXXXXXXXXXX
+      secret:
+        access:
+          key: XXXXXXXXXXX
+      bucket: test-bucket-name
+      region: us-east-1

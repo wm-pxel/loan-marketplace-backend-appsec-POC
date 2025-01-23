@@ -1,0 +1,186 @@
+extend type Query {
+    getEventsByDealUid(dealUid: String): [Event!]!
+    getEventByUid(uid: String): Event!
+
+    getEventOriginationParticipantByEventUid(uid: String): EventOriginationParticipant!
+    getEventOriginationParticipantsByEventUid(uid: String): [EventOriginationParticipant!]!
+
+    getEventDealFacilitiesByEventUid(uid: String!): [EventDealFacility!]!
+
+    getEventParticipantFacilitiesByEventParticipantId(id: Int!): [EventParticipantFacility!]!
+    getEventParticipantFacilityByEventParticipantFacility(input: EventParticipantFacilityInput!): EventParticipantFacility!
+
+    getEventLeadFacilitiesByEventUid(uid: String!): [EventLeadFacility!]!
+    getEventLeadFacilityByEventDealFacility(input: EventDealFacilityInput!): EventLeadFacility!
+}
+
+extend type Mutation {
+    createEvent(input: EventInput!): Event!
+    updateEvent(input: EventInput!): Event!
+    deleteEvent(uid: String!): Event
+
+    createEventOriginationParticipant(input: EventOriginationParticipantInput!): EventOriginationParticipant!
+    updateEventOriginationParticipant(input: EventOriginationParticipantInput!): EventOriginationParticipant!
+    deleteEventOriginationParticipant(id: Int!): EventOriginationParticipant
+
+    createEventParticipantFacility(input: EventParticipantFacilityInput!): EventParticipantFacility!
+    updateEventParticipantFacility(input: EventParticipantFacilityInput!): EventParticipantFacility!
+    deleteEventParticipantFacility(input: EventParticipantFacilityInput!): EventParticipantFacility
+
+    updateEventLeadFacility(input: EventLeadFacilityInput!): EventLeadFacility!
+    updateEventLeadFacilityAllocations(eventUid: String!, allocations: [EventLeadFacilityAllocationInput!]): [EventLeadFacility!]!
+
+    createEventDealFacility(input: EventDealFacilityInput!): EventDealFacility!
+    deleteEventDealFacility(eventDealFacilityId: Int!): EventDealFacility
+}
+
+type Event {
+    uid: String!
+    deal: Deal!
+    name: String!
+    eventType: EventType!
+    stage: Stage
+    projectedLaunchDate: String
+    launchDate: String
+    commitmentDate: String
+    commentsDueByDate: String
+    effectiveDate: String
+    projectedCloseDate: String
+    closeDate: String
+    totalInvitationAmount: Float
+    totalCommitmentAmount: Float
+    totalAllocationAmount: Float
+    leadInvitationDate: String
+    leadCommitmentDate: String
+    leadAllocationDate: String
+    createdBy: User!
+    createdDate: String!
+    updatedBy: User!
+    updatedDate: String!
+}
+
+input EventInput {
+    uid: String
+    deal: UidInput
+    name: String
+    eventType: EventTypeInput
+    projectedLaunchDate: String
+    commitmentDate: String
+    commentsDueByDate: String
+    effectiveDate: String
+    projectedCloseDate: String
+}
+
+type EventParticipant {
+    id: Int!
+    event: Event!
+    participant: Institution
+    step: ParticipantStep!
+    createdBy: User!
+    createdDate: String!
+    updatedBy: User!
+    updatedDate: String!
+}
+
+input EventParticipantInput {
+    id: Int
+    event: UidInput
+    participant: UidInput
+    step: IdInput
+}
+
+type EventOriginationParticipant {
+    id: Int!
+    event: Event!
+    participant: Institution
+    step: ParticipantStep
+    inviteRecipient: User
+    message: String
+    response: String
+    commitmentLetter: DealDocument
+    participantCertificate: DealDocument
+    signedParticipantCertificate: DealDocument
+    totalInvitationAmount: Float
+    totalCommitmentAmount: Float
+    totalAllocationAmount: Float
+    declinedFlag: String
+    declinedMessage: String
+    declinedDate: String
+    removedFlag: String
+    removedDate: String
+    createdBy: User!
+    createdDate: String!
+    updatedBy: User!
+    updatedDate: String!
+}
+
+input EventOriginationParticipantInput {
+    id: Int
+    event: UidInput
+    participant: UidInput
+    inviteRecipient: UidInput
+    message: String
+    response: String
+    declinedMessage: String
+}
+
+type EventParticipantFacility {
+    eventParticipant: EventParticipant!
+    eventDealFacility: EventDealFacility!
+    invitationAmount: Float
+    commitmentAmount: Float
+    allocationAmount: Float
+    createdBy: User!
+    createdDate: String!
+    updatedBy: User!
+    updatedDate: String!
+}
+
+input EventParticipantFacilityInput {
+    eventParticipant: IdInput!
+    eventDealFacility: IdInput!
+    invitationAmount: Float
+    commitmentAmount: Float
+    allocationAmount: Float
+}
+
+type EventLeadFacility {
+    event: Event!
+    eventDealFacility: EventDealFacility!
+    invitationAmount: Float
+    commitmentAmount: Float
+    allocationAmount: Float
+    createdBy: User!
+    createdDate: String!
+    updatedBy: User!
+    updatedDate: String!
+}
+
+input EventLeadFacilityInput {
+    event: UidInput!
+    eventDealFacility: IdInput!
+    invitationAmount: Float
+    commitmentAmount: Float
+    allocationAmount: Float
+}
+
+input EventLeadFacilityAllocationInput {
+    eventDealFacility: IdInput!
+    allocationAmount: Float
+}
+
+type EventDealFacility {
+    id: Int!
+    event: Event!
+    dealFacility: DealFacility!
+    createdBy: User!
+    createdDate: String!
+    updatedBy: User!
+    updatedDate: String!
+}
+
+input EventDealFacilityInput {
+    id: Int
+    event: UidInput!
+    dealFacility: IdInput!
+}

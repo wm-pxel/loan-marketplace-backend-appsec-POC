@@ -1,0 +1,29 @@
+{
+  "dealExternalId": "b86517b4-0693-4ec6-b880-06de4c0507f3",
+  "transferType": "U",
+  "details": [{
+    "documentExternalId": "7fdcd233-7e5e-4bde-ba1a-869ca9be69ae",
+    "url": "https://wmpfinserv--lmdev.my.salesforce.com/services/data/v56.0/sobjects/ContentVersion/0688C000001GQhpQAG/VersionData",
+    "extension": "pdf",
+    "displayName": "Test Document 1",
+    "category": "Financials"
+  },{
+    "documentExternalId": "e2b98259-b36b-4534-aabe-92193d3fd4e9",
+    "url": "https://wmpfinserv--lmdev.my.salesforce.com/services/data/v56.0/sobjects/ContentVersion/0688C000001GQhpQAG/VersionData",
+    "extension": "png",
+    "displayName": "Test Document 2",
+    "category": "Collateral"
+  },{
+    "documentExternalId": "3af08b95-c04d-49ef-b720-d82fa60c9ffa",
+    "url": "https://wmpfinserv--lmdev.my.salesforce.com/services/data/v56.0/sobjects/ContentVersion/0688C000001GQhpQAG/VersionData",
+    "extension": "docx",
+    "displayName": "Test Document 3",
+    "category": "Entity Documents"
+  },{
+    "documentExternalId": "9906866b-dba5-43e7-aeeb-b37d4c982de7",
+    "url": "https://wmpfinserv--lmdev.my.salesforce.com/services/data/v56.0/sobjects/ContentVersion/0688C000001GQhpQAG/VersionData",
+    "extension": "jpg",
+    "displayName": "Test Document 4",
+    "category": "Loan Documents"
+  }]
+}

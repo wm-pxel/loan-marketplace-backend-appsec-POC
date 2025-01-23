@@ -1,0 +1,4 @@
+-- Drop financial metrics unused fields.
+ALTER TABLE DEAL_INFO
+DROP COLUMN PATR_ELIG_IND,
+DROP COLUMN DEBT_SRV_COV_RATIO;

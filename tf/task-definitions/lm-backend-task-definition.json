@@ -1,0 +1,77 @@
+[
+    {
+      "cpu": 0,
+      "environment": [],
+      "essential": true,
+      "image": "710894263335.dkr.ecr.us-east-1.amazonaws.com/${ecr_repository}:${docker_image_tag}",
+      "logConfiguration": {
+        "logDriver": "awslogs",
+        "options": {
+          "awslogs-group": "${aws_log_group}",
+          "awslogs-region": "${aws_region}",
+          "awslogs-stream-prefix": "${aws_log_stream_prefix}"
+        }
+      },
+      "mountPoints": [],
+      "name": "lm-backend-${environment}",
+      "portMappings": [
+        { "containerPort": 10800, "hostPort": 10800, "protocol": "tcp" }
+      ],
+      "secrets": [
+        {
+          "name": "SPRING_DATASOURCE_USERNAME",
+          "valueFrom": "${SPRING_DATASOURCE_USERNAME}"
+        },
+        {
+          "name": "SPRING_DATASOURCE_PASSWORD",
+          "valueFrom": "${SPRING_DATASOURCE_PASSWORD}"
+        },
+        {
+          "name": "SPRING_PROFILES_ACTIVE",
+          "valueFrom": "${SPRING_PROFILES_ACTIVE}"
+        },
+        {
+          "name": "SPRING_DATASOURCE_URL",
+          "valueFrom": "${SPRING_DATASOURCE_URL}"
+        },
+        {
+          "name": "SECRET",
+          "valueFrom": "${SECRET}"
+        },
+        {
+          "name": "S3_FILE_UPLOAD_BUCKET",
+          "valueFrom": "${S3_FILE_UPLOAD_BUCKET}"
+        },
+        {
+          "name": "S3_FILE_UPLOAD_REGION",
+          "valueFrom": "${S3_FILE_UPLOAD_REGION}"
+        },
+        {
+          "name": "S3_FILE_UPLOAD_ACCESS_KEY_ID",
+          "valueFrom": "${S3_FILE_UPLOAD_ACCESS_KEY_ID}"
+        },
+        {
+          "name": "S3_FILE_UPLOAD_SECRET_ACCESS_KEY",
+          "valueFrom": "${S3_FILE_UPLOAD_SECRET_ACCESS_KEY}"
+        },
+        {
+          "name": "AWS_ACCESS_KEY_ID",
+          "valueFrom": "${AWS_ACCESS_KEY_ID}"
+        },
+        {
+          "name": "AWS_SECRET_ACCESS_KEY",
+          "valueFrom": "${AWS_SECRET_ACCESS_KEY}"
+        },
+        {
+          "name": "SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUERURI",
+          "valueFrom": "${SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUERURI}"
+        },
+        {
+          "name": "SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_JWKSETURI",
+          "valueFrom": "${SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_JWKSETURI}"
+        }
+      ],
+      "volumesFrom": []
+    }
+  ]
+  

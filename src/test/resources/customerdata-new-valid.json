@@ -1,0 +1,174 @@
+{
+  "payload": {
+    "marketplaceData": {
+      "deal": {
+        "dealExternalId": "7fdcd233-7e5e-4bde-ba1a-869ca9be69ae",
+        "originatorId": "def408de-1472-4903-ab01-e0e528138e77",
+        "name": "Test Deal",
+        "dealIndustry": "Farm Credit",
+        "initialLenderFlag": "N",
+        "dealStructure": "Participation",
+        "dealType": "New",
+        "description": "This is an example deal",
+        "dealAmount": 13000000.33,
+        "defaultProbability": 11,
+        "currYearEbita": 2750000.77
+      },
+      "event":{
+        "eventExternalId": "7fdcd233-7e5e-4bde-ba1a-869ca9be69ae",
+        "name": "Origination Event",
+        "eventType": "Origination",
+        "projectedLaunchDate": "2023-11-30",
+        "launchDate": "2023-12-01",
+        "commitmentDate": "2023-12-10",
+        "commentsDueByDate": "2023-12-18",
+        "effectiveDate": "2024-04-01",
+        "projectedCloseDate": "2024-03-20",
+        "closeDate": "2024-03-22"
+      },
+      "applicants": [
+        {
+          "applicantExternalId": "97fbe0b9-4442-4292-bbf9-d50e133286fd",
+          "borrowerDesc": "This is a sample description",
+          "borrowerName": "Sammy Davis",
+          "borrowerCityName": "Mount Vernon",
+          "borrowerStateCode": "IL",
+          "borrowerCountyName": "Jefferson County",
+          "farmCreditElig": "Association Eligible",
+          "taxId": "11-223344",
+          "borrowerIndustry": "424930",
+          "businessAge": 19
+        }
+      ],
+      "covenants": [
+        {
+          "covenantExternalId": "b44ab8f3-b15b-4b82-afa6-5e1f1fe7dd92",
+          "entityName": "Test Covenant 1",
+          "categoryName": "Test Category",
+          "covenantType": "Farm",
+          "frequency": "Weekly",
+          "nextEvalDate": "2024-04-20",
+          "effectiveDate": "2024-04-01"
+        },
+        {
+          "covenantExternalId": "b44ab8f3-b15b-4b82-afa6-5e1f1fe7dd93",
+          "entityName": "Test Covenant 2",
+          "categoryName": "Test Category",
+          "covenantType": "Other",
+          "frequency": "Weekly",
+          "nextEvalDate": "2024-04-25",
+          "effectiveDate": "2024-04-05"
+        }
+      ],
+      "facilities": [
+        {
+          "facilityExternalId": "33393379-ef49-4359-98ef-3c7a037e1e05",
+          "facilityAmount": 12570000.22,
+          "facilityType": "Revolving Term Loan",
+          "collateral": "Secured excluding real estate",
+          "tenor": 33,
+          "pricing": "SOFR + 140.0bps",
+          "creditSpreadAdj": "Test CSA",
+          "facilityPurpose": "New Construction",
+          "purposeDetail": "Same detail text",
+          "dayCount": "Actual/365",
+          "regulatoryLoanType": "Agribusiness - Loans to Cooperatives",
+          "guarInvFlag": "N",
+          "patronagePayingFlag": "N",
+          "farmCreditType": "FLCA",
+          "revolverUtil": null,
+          "upfrontFees": "lots of fees",
+          "unusedFees": "not unused",
+          "amortization": "test amortization",
+          "lgdOption": "A"
+        },
+        {
+          "facilityExternalId": "33393379-ef49-4359-98ef-3c7a037e1e06",
+          "facilityAmount": 12670000.66,
+          "facilityType": "Revolving Term Loan",
+          "collateral": "Secured excluding real estate",
+          "tenor": 33,
+          "pricing": "SOFR + 140.0bps",
+          "creditSpreadAdj": "Test CSA",
+          "facilityPurpose": "New Construction",
+          "purposeDetail": "Same detail text",
+          "dayCount": "Actual/365",
+          "regulatoryLoanType": "Agribusiness - Loans to Cooperatives",
+          "guarInvFlag": "N",
+          "patronagePayingFlag": "N",
+          "farmCreditType": "FLCA",
+          "revolverUtil": null,
+          "upfrontFees": "lots of fees",
+          "unusedFees": "unused fees",
+          "amortization": "test amortization",
+          "lgdOption": "B"
+        }
+      ],
+      "documents": [
+        {
+          "documentExternalId": "7fdcd233-7e5e-4bde-ba1a-869ca9be69ae",
+          "url": "https://wmpfinserv--lmdev.my.salesforce.com/services/data/v56.0/sobjects/ContentVersion/0688C000001GQhpQAG/VersionData",
+          "extension": "pdf",
+          "displayName": "Test Document 1",
+          "category": "Financials"
+        },
+        {
+          "documentExternalId": "e2b98259-b36b-4534-aabe-92193d3fd4e9",
+          "url": "https://wmpfinserv--lmdev.my.salesforce.com/services/data/v56.0/sobjects/ContentVersion/0688C000001GQhpQAG/VersionData",
+          "extension": "png",
+          "displayName": "Test Document 2",
+          "category": "Collateral"
+        },
+        {
+          "documentExternalId": "3af08b95-c04d-49ef-b720-d82fa60c9ffa",
+          "url": "https://wmpfinserv--lmdev.my.salesforce.com/services/data/v56.0/sobjects/ContentVersion/0688C000001GQhpQAG/VersionData",
+          "extension": "docx",
+          "displayName": "Test Document 3",
+          "category": "Entity Documents"
+        },
+        {
+          "documentExternalId": "9906866b-dba5-43e7-aeeb-b37d4c982de7",
+          "url": "https://wmpfinserv--lmdev.my.salesforce.com/services/data/v56.0/sobjects/ContentVersion/0688C000001GQhpQAG/VersionData",
+          "extension": "jpg",
+          "displayName": "Test Document 4",
+          "category": "Loan Documents"
+        }
+      ]
+    },
+    "unsupportedData": {
+      "trackedChanges": [
+        {
+          "fieldType": "applicant",
+          "field": "applicationRbcLabel",
+          "date": "1900-01-01"
+        },
+        {
+          "fieldType": "collateral",
+          "field": "applicationRbcLabel"
+        },
+        {
+          "fieldType": "facilities",
+          "field": "applicationRbcLabel"
+        }
+      ],
+      "applicants": [
+        {
+          "applicantExternalId": 2147483647,
+          "rbcLabel": "rbcValue"
+        }
+      ],
+      "collateral": [
+        {
+          "collateralExternalId": 2147483647,
+          "rbcLabel": "rbcValue"
+        }
+      ],
+      "covenants": [
+        {
+          "covenantExternalId": 2147483647,
+          "rbcLabel": "rbcValue"
+        }
+      ]
+    }
+  }
+}

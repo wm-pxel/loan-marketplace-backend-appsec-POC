@@ -1,0 +1,60 @@
+lamina:
+  base-url: http://localhost:8080
+  environment: local
+  email-notification:
+    process-interval: "0 */15 * * * *"
+  email-service:
+    send-address: noreply@app.laminafs.com
+    enabled: false
+    filter: true
+  lambda:
+    enabled: false
+    dp-function-name: arn:aws:lambda:us-east-1:710894263335:function:lamina-fileManagerService
+    dd-function-name: clientFileDownloadService-dev
+  cognito:
+    user-pool-id: us-east-1_1upDqvXcC
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health, info
+  info:
+    build:
+      enabled: true
+
+server:
+  port: 10800
+
+spring:
+  application:
+    name: Lamina BE
+  banner:
+    charset: UTF-8
+    location: classpath:banner.txt
+  datasource:
+    driver-class-name: org.postgresql.Driver
+  flyway:
+    enabled: true
+    locations: classpath:/db/migration
+    clean-disabled: false
+  graphql:
+    graphiql:
+      enabled: false
+  servlet:
+    multipart:
+      max-file-size: 500MB
+      max-request-size: 500MB
+
+springdoc:
+  swagger-ui:
+    defaultModelsExpandDepth: -1
+
+logging:
+  level:
+    root: info
+
+s3:
+  file:
+    max-file-size: 500MB
+    max-request-size: 500MB

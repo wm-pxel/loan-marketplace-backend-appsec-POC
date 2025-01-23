@@ -1,0 +1,5 @@
+bucket         = "lm-sandbox-tf-state"
+region         = "us-east-1"
+key            = "sandbox-backend-tfstate"
+dynamodb_table = "lm-sandbox-tf-state"
+encrypt        = true

@@ -1,0 +1,103 @@
+{
+  "payload": {
+    "marketplaceData": {
+      "deal": {
+        "originatorId": "def408de-1472-4903-ab01-e0e528138e77"
+      },
+      "covenants": [
+        {
+          "covenantExternalId": "b44ab8f3-b15b-4b82-afa6-5e1f1fe7dd92",
+          "entityName": "Test Covenant 1",
+          "categoryName": "Test Category",
+          "covenantType": "Farm",
+          "frequency": "Weekly",
+          "nextEvalDate": "2024-04-20",
+          "effectiveDate": "2024-04-01"
+        },
+        {
+          "covenantExternalId": "b44ab8f3-b15b-4b82-afa6-5e1f1fe7dd93",
+          "entityName": "Test Covenant 2",
+          "categoryName": "Test Category",
+          "covenantType": "Other",
+          "frequency": "Weekly",
+          "nextEvalDate": "2024-04-25",
+          "effectiveDate": "2024-04-05"
+        },
+        {
+          "covenantExternalId": "b44ab8f3-b15b-4b82-afa6-5e1f1fe7dd00",
+          "entityName": "Test Nonexistent Covenant",
+          "categoryName": "Test Category",
+          "covenantType": "Other",
+          "frequency": "Weekly",
+          "nextEvalDate": "2024-04-25",
+          "effectiveDate": "2024-04-05"
+        }
+      ],
+      "facilities": [
+        {
+          "facilityExternalId": "33393379-ef49-4359-98ef-3c7a037e1e05",
+          "facilityAmount": 12570000.22,
+          "facilityType": "Revolving Term Loan",
+          "collateral": "Secured excluding real estate",
+          "tenor": 33,
+          "pricing": "SOFR + 140.0bps",
+          "creditSpreadAdj": "Test CSA",
+          "facilityPurpose": "New Construction",
+          "purposeDetail": "Same detail text",
+          "dayCount": "Actual/365",
+          "regulatoryLoanType": "Agribusiness - Loans to Cooperatives",
+          "guarInvFlag": "N",
+          "patronagePayingFlag": "N",
+          "farmCreditType": "FLCA",
+          "revolverUtil": null,
+          "upfrontFees": "lots of fees",
+          "unusedFees": "not unused",
+          "amortization": "test amortization",
+          "lgdOption": "A"
+        },
+        {
+          "facilityExternalId": "33393379-ef49-4359-98ef-3c7a037e1e06",
+          "facilityAmount": 12670000.66,
+          "facilityType": "Revolving Term Loan",
+          "collateral": "Secured excluding real estate",
+          "tenor": 33,
+          "pricing": "SOFR + 140.0bps",
+          "creditSpreadAdj": "Test CSA",
+          "facilityPurpose": "New Construction",
+          "purposeDetail": "Same detail text",
+          "dayCount": "Actual/365",
+          "regulatoryLoanType": "Agribusiness - Loans to Cooperatives",
+          "guarInvFlag": "N",
+          "patronagePayingFlag": "N",
+          "farmCreditType": "FLCA",
+          "revolverUtil": null,
+          "upfrontFees": "lots of fees",
+          "unusedFees": "unused fees",
+          "amortization": "test amortization",
+          "lgdOption": "B"
+        },
+        {
+          "facilityExternalId": "33393379-ef49-4359-98ef-3c7a037e1e00",
+          "facilityAmount": 12670000.66,
+          "facilityType": "Revolving Term Loan",
+          "collateral": "Secured excluding real estate",
+          "tenor": 33,
+          "pricing": "SOFR + 140.0bps",
+          "creditSpreadAdj": "Test CSA",
+          "facilityPurpose": "New Construction",
+          "purposeDetail": "Same detail text",
+          "dayCount": "Actual/365",
+          "regulatoryLoanType": "Agribusiness - Loans to Cooperatives",
+          "guarInvFlag": "N",
+          "patronagePayingFlag": "N",
+          "farmCreditType": "FLCA",
+          "revolverUtil": null,
+          "upfrontFees": "lots of fees",
+          "unusedFees": "unused fees",
+          "amortization": "test amortization",
+          "lgdOption": "C"
+        }
+      ]
+    }
+  }
+}

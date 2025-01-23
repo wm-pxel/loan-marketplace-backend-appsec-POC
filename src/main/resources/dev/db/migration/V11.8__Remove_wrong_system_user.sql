@@ -1,0 +1,4 @@
+-- Remove wrong system users
+DELETE FROM user_role_xref WHERE user_id in (SELECT user_id from user_info where user_uuid in ('d32f1b56-fd9f-4f94-a5fe-511db33e9bc6', 'ba446870-57f5-47ce-a695-533858848d10', 'cb50501f-b40a-4901-b6b3-7172f53608f8', '49296f2e-f116-44c7-bd25-ab90b3705837', 'e523d692-d856-4ca4-9da5-e6bdba5cdf3c'));
+DELETE FROM institution_confidentiality_agreement WHERE created_by_id in (SELECT user_id from user_info where user_uuid in ('d32f1b56-fd9f-4f94-a5fe-511db33e9bc6', 'ba446870-57f5-47ce-a695-533858848d10', 'cb50501f-b40a-4901-b6b3-7172f53608f8', '49296f2e-f116-44c7-bd25-ab90b3705837', 'e523d692-d856-4ca4-9da5-e6bdba5cdf3c'));
+DELETE FROM user_info WHERE user_uuid in ('d32f1b56-fd9f-4f94-a5fe-511db33e9bc6', 'ba446870-57f5-47ce-a695-533858848d10', 'cb50501f-b40a-4901-b6b3-7172f53608f8', '49296f2e-f116-44c7-bd25-ab90b3705837', 'e523d692-d856-4ca4-9da5-e6bdba5cdf3c');

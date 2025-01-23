@@ -1,0 +1,97 @@
+name: Run E2E Tests
+
+on:
+  pull_request:
+    types: [opened, synchronize, ready_for_review, reopened]
+  workflow_dispatch:
+    inputs:
+      branch_or_tag:
+        description: 'Branch or Tag for FE'
+        required: false
+        default: 'main'
+
+jobs:
+  cypress-e2e:
+    environment: test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Determine FE branch
+        id: determine_branch
+        env:
+          GH_TOKEN: ${{ secrets.REPO_GH_TOKEN }}
+        run: |
+          if [[ "${{ github.event_name }}" == "workflow_dispatch" && -n "${{ github.event.inputs.branch_or_tag }}" && "${{ github.event.inputs.branch_or_tag }}" != "main" ]]; then
+            echo "Using specified branch or tag: ${{ github.event.inputs.branch_or_tag }}"
+            echo "frontend_ref=${{ github.event.inputs.branch_or_tag }}" >> $GITHUB_OUTPUT
+          else
+            BACKEND_BRANCH=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}}
+            echo "Checking for frontend branch: $BACKEND_BRANCH"
+            if git ls-remote --exit-code --heads https://${GH_TOKEN}@github.com/wm-pxel/loan-marketplace-frontend.git $BACKEND_BRANCH; then
+              echo "Frontend branch '$BACKEND_BRANCH' found. Using it for E2E tests."
+              echo "frontend_ref=$BACKEND_BRANCH" >> $GITHUB_OUTPUT
+            else
+              echo "Frontend branch '$BACKEND_BRANCH' not found in the frontend repository."
+              echo "Available branches in the frontend repository:"
+              git ls-remote --heads https://${GH_TOKEN}@github.com/wm-pxel/loan-marketplace-frontend.git | sed 's/.*\///'
+              echo "Falling back to 'main' branch for E2E tests."
+              echo "frontend_ref=main" >> $GITHUB_OUTPUT
+            fi
+          fi
+      
+      - name: Checkout Backend Repo
+        uses: actions/checkout@v4
+        with:
+          path: backend
+
+      - name: Start Backend
+        env:
+          POSTGRES_DB: marketplace
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: localdev1234
+          SPRING_DATASOURCE_PASSWORD: localdev1234
+          SPRING_DATASOURCE_USERNAME: postgres
+          SPRING_DATASOURCE_DATABASE: marketplace
+          SPRING_PROFILES_ACTIVE: dev
+          S3_FILE_UPLOAD_BUCKET: ${{ secrets.S3_FILE_UPLOAD_BUCKET }}
+          S3_FILE_UPLOAD_REGION: us-east-1
+          S3_FILE_UPLOAD_ACCESS_KEY_ID: ${{ secrets.S3_FILE_UPLOAD_ACCESS_KEY_ID }}
+          S3_FILE_UPLOAD_SECRET_ACCESS_KEY: ${{ secrets.S3_FILE_UPLOAD_SECRET_ACCESS_KEY }}
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUERURI:  ${{ vars.ISSUER_URI }}
+          SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_JWKSETURI:  ${{ vars.JWK_SET_URI }}
+        run: |
+          cd backend
+          docker compose up db backend -d
+
+      - name: Checkout Frontend Repo
+        uses: actions/checkout@v4
+        with:
+          repository: wm-pxel/loan-marketplace-frontend
+          token: ${{ secrets.REPO_GH_TOKEN }}
+          ref: ${{ steps.determine_branch.outputs.frontend_ref }}
+
+      - name: Run Cypress Tests
+        uses: cypress-io/github-action@v6
+        with:
+          build: npx vite build
+          start: npx vite preview --port 8080
+        env:
+          VITE_API_URL: http://localhost:10800
+          VITE_GQL_ROUTE: graphql
+          VITE_COGNITO_AUTHORITY_ID: ${{ vars.AUTHORITY_ID }}
+          VITE_COGNITO_CLIENT_ID: ${{ vars.WEB_CLIENT_ID }}
+          VITE_COGNITO_REDIRECT_URL: ${{ vars.WEB_CLIENT_REDIRECT }}
+          VITE_COGNITO_IDENTITY_POOL_ID: ${{ vars.IDENTITY_POOL_ID }}
+          CYPRESS_COGNITO_AUTHORITY: ${{ vars.ISSUER_URI }}
+          CYPRESS_CLIENT_ID: ${{ vars.WEB_CLIENT_ID }}
+          CYPRESS_AUTH_DOMAIN: ${{ vars.AUTH_DOMAIN }}
+          CYPRESS_API_URL: http://localhost:10800
+
+
+      - name: Upload Screenshots
+        uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: cypress-screenshots-${{ github.run_id }}-${{ github.run_attempt }}
+          path: cypress/screenshots

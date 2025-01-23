@@ -1,0 +1,33 @@
+lamina:
+  base-url: https://int.app.laminafs.com
+  environment: int
+  email-notification:
+    process-interval: "0 */15 * * * *"
+  email-service:
+    enabled: false
+    filter: true
+  lambda:
+    enabled: false
+    dp-function-name: arn:aws:lambda:us-east-1:710894263335:function:lamina-fileManagerService
+    dd-function-name: clientFileDownloadService-int
+
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/marketplace_int
+  flyway:
+    locations: classpath:/db/migration,classpath:/test/db/migration,classpath:/dev/db/migration
+  graphql:
+    graphiql:
+      enabled: true
+    cors:
+      allowed-methods:
+        - GET
+        - POST
+        - PUT
+        - DELETE
+      allowed-origins:
+        - "*"
+
+logging:
+  level:
+    root: info        # Set this as needed for debugging

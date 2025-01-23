@@ -1,0 +1,5 @@
+bucket         = "lm-qa-tf-state"
+region         = "us-east-1"
+key            = "qa-backend-tfstate"
+dynamodb_table = "lm-qa-tf-state"
+encrypt        = true

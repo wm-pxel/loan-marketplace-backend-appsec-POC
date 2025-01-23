@@ -1,0 +1,306 @@
+extend type Query {
+    allDeals: [Deal!]!
+
+    getDealMemberByDealUidAndUserUid(dealUid: String, userUid: String): DealMember!
+    getDealMembersByDealUid(uid: String): [DealMember!]!
+
+    getDealSummaryByUser: [DealSummary!]!
+    getDealEventSummaryByUser: [DealEventSummary!]!
+
+    getDealByUid(uid: String): Deal!
+    getDealEventByUid(uid: String): DealEvent!
+
+    getDealDocumentsByDealUid(uid: String): [DealDocument!]!
+    getDealDocumentById(id: Int): DealDocument!
+
+    getDealCovenantsByDealUid(uid: String): [DealCovenant!]!
+    getDealCovenantById(id: Int): DealCovenant!
+
+    getDealFacilitiesByDealUid(uid: String): [DealFacility!]!
+    getDealFacilitiesByEventUid(uid: String): [DealFacility!]!
+    getDealFacilityById(id: Int): DealFacility!
+
+    getConfidentialityAgreementByDealAndUser(dealUid: String!): ConfidentialityAgreement!
+}
+
+extend type Mutation {
+    createDeal(input: DealInput!): Deal!
+    updateDeal(input: DealInput!): Deal!
+    deleteDeal(dealUid: String!): Deal
+
+    createDealMember(input: DealMemberInput!): DealMember!
+    createDealMembers(input: DealMembersInput!): DealMembers!
+    deleteDealMember(input: DealMemberInput!): DealMember
+
+    createDealCovenant(input: DealCovenantInput!): DealCovenant!
+    updateDealCovenant(input: DealCovenantInput!): DealCovenant!
+    deleteDealCovenant(covenantId: Int!): DealCovenant
+
+    createDealFacility(input: DealFacilityInput!): DealFacility!
+    updateDealFacility(input: DealFacilityInput!): DealFacility!
+    deleteDealFacility(facilityId: Int!): DealFacility
+
+    updateDealDocument(input: DealDocumentInput!): DealDocument!
+    deleteDealDocument(documentId: Int!): DealDocument
+
+    agreeToConfidentialityAgreement(dealUid: String!, confidentialityAgreementId: Int!): Boolean!
+}
+
+type Deal {
+    uid: String!
+    name: String!
+    dealIndustry: PicklistItem!
+    originator: Institution!
+    initialLenderFlag: String
+    initialLender: InitialLender
+    userRolesDesc: String
+    relation: String!
+    viewType: String!
+    dealStructure: PicklistItem!
+    dealType: String!
+    description: String
+    dealAmount: Float!
+    borrowerDesc: String
+    borrowerName: String!
+    borrowerCityName: String
+    borrowerStateCode: String
+    borrowerCountyName: String
+    farmCreditElig: PicklistItem
+    taxId: String!
+    borrowerIndustry: NaicsCode
+    businessAge: Int
+    defaultProbability: Int
+    currYearEbita: Float
+    createdBy: User!
+    createdDate: String!
+    updatedBy: User!
+    updatedDate: String!
+    active: String!
+}
+
+type DealEvent {
+    uid: String!
+    name: String!
+    dealIndustry: PicklistItem!
+    originator: Institution!
+    initialLenderFlag: String
+    initialLender: InitialLender
+    openEventUid: String
+    userRolesDesc: String
+    relation: String!
+    viewType: String!
+    dealStructure: PicklistItem!
+    dealType: String!
+    description: String
+    dealAmount: Float!
+    event: Event
+    eventParticipant: EventParticipant
+    borrowerDesc: String
+    borrowerName: String!
+    borrowerCityName: String
+    borrowerStateCode: String
+    borrowerCountyName: String
+    farmCreditElig: PicklistItem
+    taxId: String!
+    borrowerIndustry: NaicsCode
+    businessAge: Int
+    defaultProbability: Int
+    currYearEbita: Float
+    createdBy: User!
+    createdDate: String!
+    updatedBy: User!
+    updatedDate: String!
+    active: String!
+}
+
+type DealSummary {
+    uid: String!
+    name: String!
+    relation: String!
+    originator: Institution!
+    stage: Stage!
+    dealAmount: Float!
+    closeDate: String
+    declinedFlag: String
+    removedFlag: String
+    step: ParticipantStep
+    active: String!
+    eventName: String
+}
+
+type DealEventSummary {
+    uid: String!
+    name: String!
+    relation: String!
+    originator: Institution!
+    dealAmount: Float!
+    closeDate: String
+    active: String!
+    event: Event
+    eventParticipant: EventOriginationParticipant
+}
+
+type DealMember {
+    deal: Deal!
+    user: User!
+    memberTypeCode: String!
+    memberTypeDesc: String!
+    createdBy: User!
+    createdDate: String!
+}
+
+type DealMembers {
+    deal: Deal!
+    users: [User!]
+}
+
+type DealDocument {
+    id: Int!
+    deal: Deal!
+    displayName: String!
+    documentName: String!
+    category: DocumentCategory!
+    documentType: String!
+    description: String
+    source: String!
+    createdBy: User!
+    createdDate: String!
+    updatedBy: User!
+    updatedDate: String!
+}
+
+type DealCovenant {
+    id: Int!
+    deal: Deal!
+    entityName: String
+    categoryName: String!
+    covenantType: String
+    frequency: String
+    nextEvalDate: String
+    effectiveDate: String
+    createdBy: User!
+    createdDate: String!
+    updatedBy: User!
+    updatedDate: String!
+}
+
+type DealFacility {
+    id: Int!
+    deal: Deal!
+    facilityName: String!
+    facilityAmount: Float!
+    facilityType: PicklistItem
+    collateral: PicklistItem
+    tenor: Int
+    pricingGrid: DealDocument
+    pricing: String
+    creditSpreadAdj: String
+    facilityPurpose: PicklistItem
+    purposeDetail: String
+    dayCount: PicklistItem
+    regulatoryLoanType: PicklistItem
+    guarInvFlag: String
+    patronagePayingFlag: String
+    farmCreditType: String
+    revolverUtil: Int
+    upfrontFees: String
+    unusedFees: String
+    amortization: String
+    maturityDate: String
+    renewalDate: String
+    createdBy: User!
+    createdDate: String!
+    updatedBy: User!
+    updatedDate: String!
+    lgdOption: String
+}
+
+input IdInput {
+    id: Int!
+}
+
+input DealInput {
+    uid: String
+    name: String
+    dealIndustry: PicklistItemInput
+    originator: UidInput
+    initialLenderFlag: String
+    initialLender: InitialLenderInput
+    dealStructure: PicklistItemInput
+    dealType: String
+    description: String
+    dealAmount: Float
+    borrowerDesc: String
+    borrowerName: String
+    borrowerCityName: String
+    borrowerStateCode: String
+    borrowerCountyName: String
+    farmCreditElig: PicklistItemInput
+    taxId: String
+    borrowerIndustry: NaicsCodeInput
+    businessAge: Int
+    defaultProbability: Int
+    currYearEbita: Float
+    active: String
+}
+
+input StatusCodeInput {
+    code: String!
+}
+
+input UidInput {
+    uid: String!
+}
+
+input DealMemberInput {
+    deal: UidInput!
+    user: UidInput!
+}
+
+input DealMembersInput {
+    deal: UidInput!
+    users: [UidInput!]
+}
+
+input DealCovenantInput {
+    id: Int
+    deal: UidInput!
+    entityName: String
+    categoryName: String!
+    covenantType: String
+    frequency: String
+    nextEvalDate: String
+    effectiveDate: String
+}
+
+input DealFacilityInput {
+    id: Int
+    deal: UidInput!
+    facilityAmount: Float!
+    facilityType: PicklistItemInput
+    tenor: Int
+    pricing: String
+    creditSpreadAdj: String
+    collateral: PicklistItemInput
+    facilityPurpose: PicklistItemInput
+    purposeDetail: String
+    dayCount: PicklistItemInput
+    regulatoryLoanType: PicklistItemInput
+    guarInvFlag: String
+    patronagePayingFlag: String
+    farmCreditType: String
+    revolverUtil: Int
+    upfrontFees: String
+    unusedFees: String
+    amortization: String
+    maturityDate: String
+    renewalDate: String
+    lgdOption: String
+}
+
+input DealDocumentInput {
+    id: Int
+    deal: UidInput!
+    displayName: String
+    description: String
+}

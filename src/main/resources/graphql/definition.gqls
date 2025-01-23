@@ -1,0 +1,131 @@
+extend type Query {
+    allParticipantSteps: [ParticipantStep]!
+    getParticipantStepById(id: Int!): ParticipantStep!
+    getParticipantStepByOrder(order: Int!): ParticipantStep!
+
+    allNaicsCodes: [NaicsCode]
+    getNaicsCodeByCode(code: String!): NaicsCode!
+    searchNaicsCodesByTitle(title: String!): [NaicsCode]
+
+    allRoles: [Role]!
+    allStages: [Stage!]!
+    allDocumentCategories: [DocumentCategory!]!
+
+    allInitialLenders: [InitialLender!]!
+    getInitialLenderById(lenderId: Int!): InitialLender!
+    searchInitialLendersByLender(lenderName: String!): [InitialLender]
+
+    allPicklistCategories: [PicklistCategory!]!
+    getPicklistByCategoryId(categoryId: Int!): [PicklistItem]
+    getPicklistByCategoryName(categoryName: String!): [PicklistItem]
+
+    allEventTypes: [EventType]!
+    getEventTypeById(id: Int!): EventType!
+}
+
+extend type Mutation {
+    createInitialLender(input: InitialLenderInput!): InitialLender!
+    updateInitialLender(input: InitialLenderInput!): InitialLender!
+    deleteInitialLender(lenderId: Int!): InitialLender
+}
+
+type Role {
+    id: Int!
+    code: String!
+    name: String!
+    description: String!
+}
+
+input RoleInput {
+    id: Int
+    code: String
+}
+
+type Stage {
+    id: Int!
+    name: String
+    title: String
+    subtitle: String
+    order: Int!
+}
+
+type DocumentCategory {
+    id: Int!
+    name: String!
+    order: Int!
+}
+
+type NaicsCode {
+    code: String!
+    title: String!
+}
+
+input NaicsCodeInput {
+    code: String
+    title: String
+}
+
+type BillingCode {
+    code: String!
+    description: String!
+}
+
+type InitialLender {
+    id: Int
+    lenderName: String
+    createdDate: String!
+    updatedDate: String!
+    active: String!
+}
+
+type ParticipantStep {
+    id: Int!
+    name: String!
+    leadViewStatus: String
+    participantStatus: String
+    order: Int!
+}
+
+input InitialLenderInput {
+    id: Int
+    lenderName: String
+    active: String
+}
+
+type PicklistCategory {
+    id: Int!
+    name: String!
+}
+
+input PicklistCategoryInput {
+    id: Int
+    name: String
+}
+
+type PicklistItem {
+    id: Int!
+    category: PicklistCategory!
+    option: String!
+    order: Int!
+}
+
+input PicklistItemInput {
+    id: Int
+    category: PicklistCategoryInput
+    option: String
+    order: Int
+}
+
+type EventType {
+    id: Int!
+    name: String!
+}
+
+input EventTypeInput {
+    id: Int!
+}
+
+type InviteStatus {
+    code: String!
+    description: String
+}

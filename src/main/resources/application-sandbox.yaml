@@ -1,0 +1,18 @@
+lamina:
+  base-url: https://sandbox.app.laminafs.com
+  environment: sandbox
+  email-notification:
+    process-interval: "0 */15 * * * *"
+  email-service:
+    enabled: true
+    filter: true
+  lambda:
+    enabled: true
+    dp-function-name: arn:aws:lambda:us-east-1:710894263335:function:lamina-fileManagerService
+    dd-function-name: clientFileDownloadService-sandbox
+  cognito:
+    user-pool-id: us-east-1_zb8UlMosV
+
+spring:
+  flyway:
+    locations: classpath:/db/migration

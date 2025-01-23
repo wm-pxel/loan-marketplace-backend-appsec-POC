@@ -1,0 +1,4 @@
+bucket         = "lm-shared-tf-state"
+region         = "us-east-1"
+key            = "shared-backend-tfstate"
+encrypt        = true

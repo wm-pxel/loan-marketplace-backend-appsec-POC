@@ -1,0 +1,83 @@
+name: Deploy To Environment
+
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Environment to deploy to'
+        required: true
+        type: environment
+        default: 'qa'
+      tag:
+        description: "Tag version to deploy"
+        required: true
+
+jobs:
+  deploy-to-environment:
+    environment: ${{ inputs.environment }}
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with: 
+          ref: ${{ inputs.tag }}
+
+      - name: Register credentials
+        run: "mkdir -p ~/.aws \
+          && touch ~/.aws/credentials \
+          && echo '[default]' > ~/.aws/credentials \
+          && echo 'aws_access_key_id = ${{ secrets.AWS_ACCESS_KEY_ID }}' >> ~/.aws/credentials \
+          && echo 'aws_secret_access_key = ${{ secrets.AWS_SECRET_ACCESS_KEY }}' >> ~/.aws/credentials \
+          && echo '[default]' > ~/.aws/config
+          && echo 'region = ${{ secrets.AWS_DEFAULT_REGION }}' >> ~/.aws/config \
+          && echo 'output = json' >> ~/.aws/config"
+
+      - name: Build and push image to ecr
+        run: |
+          aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 710894263335.dkr.ecr.us-east-1.amazonaws.com
+          docker build --platform linux/amd64 -f docker/deployment/Dockerfile -t 710894263335.dkr.ecr.us-east-1.amazonaws.com/lm-backend-${{ inputs.environment }}:${{ inputs.tag }} .
+          docker push 710894263335.dkr.ecr.us-east-1.amazonaws.com/lm-backend-${{ inputs.environment }}:${{ inputs.tag }}
+          aws secretsmanager update-secret --secret-id "lm-backend-image-tag-${{ inputs.environment }}" --secret-string "{\"tag\": \"${{ inputs.tag }}\"}" --output json
+
+      - uses: hashicorp/setup-terraform@v2
+        with:
+          terraform_version: 1.5.7
+
+      - name: Terraform shared init
+        working-directory: tf-shared
+        shell: bash
+        run: |
+          terraform init -upgrade -backend-config=shared.aws.tfbackend -reconfigure
+
+      - name: Terraform shared plan
+        working-directory: tf-shared
+        shell: bash
+        run: |
+          terraform plan -var-file=shared.tfvars
+
+      - name: Terraform shared apply
+        if: true
+        working-directory: tf-shared
+        shell: bash
+        run: |
+          terraform apply -var-file=shared.tfvars -auto-approve
+
+      - name: Terraform init
+        working-directory: tf
+        shell: bash
+        run: |
+          terraform init -upgrade -backend-config=${{ inputs.environment }}.aws.tfbackend -reconfigure
+
+      - name: Terraform plan
+        working-directory: tf
+        shell: bash
+        run: |
+          terraform plan -var-file=${{ inputs.environment }}.tfvars
+
+      - name: Terraform apply
+        if: true
+        working-directory: tf
+        shell: bash
+        run: |
+          terraform apply -var-file=${{ inputs.environment }}.tfvars -auto-approve

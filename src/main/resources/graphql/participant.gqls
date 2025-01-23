@@ -1,0 +1,46 @@
+extend type Mutation {
+    sendEventParticipantInvite(eventParticipantId: Int!): EventOriginationParticipant
+    acceptEventParticipantInvite(eventParticipantId: Int!): EventOriginationParticipant
+    approveEventFullDealAccess(eventParticipantId: Int!): EventOriginationParticipant
+    launchEvent(input: DealLaunchInput!): Event
+    sendEventCommitment(eventParticipantId: Int!): EventOriginationParticipant
+    sendEventAllocation(eventParticipantId: Int!): EventOriginationParticipant
+    confirmEventDraftLoanUploaded(eventUid: String!, commentsDueByDate: String!): Event
+    notifyEventFinalLoanUploaded(eventUid: String!): Event
+    confirmEventLeadSentParticipantCertificate(eventParticipantId: Int!): EventOriginationParticipant
+    confirmEventParticipantSentParticipantCertificate(eventParticipantId: Int!): EventOriginationParticipant
+    closeEvent(eventUid: String!, effectiveDate: String!): Event
+    declineEvent(eventParticipantId: Int!): EventOriginationParticipant
+    removeParticipantFromEvent(eventParticipantId: Int!): EventOriginationParticipant
+
+    setLeadInvitationDate(eventUid: String!): Event
+    setLeadCommitmentDate(eventUid: String!): Event
+    setLeadAllocationDate(eventUid: String!): Event
+
+    updateDealDates(input: DealDatesInput!): Deal
+    updateEventDates(input: EventDatesInput!): Event
+}
+
+input DealLaunchInput {
+    uid: String!
+    commitmentDate: String!
+    projectedCloseDate: String!
+}
+
+input DealDatesInput {
+    uid: String!
+    projectedLaunchDate: String
+    commitmentDate: String
+    projectedCloseDate: String
+    commentsDueByDate: String
+    effectiveDate: String
+}
+
+input EventDatesInput {
+    uid: String!
+    projectedLaunchDate: String
+    commitmentDate: String
+    projectedCloseDate: String
+    commentsDueByDate: String
+    effectiveDate: String
+}

@@ -1,0 +1,33 @@
+lamina:
+  base-url: https://dev.app.laminafs.com
+  environment: dev
+  email-notification:
+    process-interval: "0 */15 * * * *"
+  email-service:
+    enabled: false
+    filter: false
+  lambda:
+    enabled: true
+    dp-function-name: arn:aws:lambda:us-east-1:710894263335:function:lamina-fileManagerService
+    dd-function-name: clientFileDownloadService-dev
+  cognito:
+    user-pool-id: us-east-1_1upDqvXcC
+
+spring:
+  flyway:
+    locations: classpath:/db/migration,classpath:/test/db/migration,classpath:/dev/db/migration
+  graphql:
+    graphiql:
+      enabled: true
+    cors:
+      allowed-methods:
+        - GET
+        - POST
+        - PUT
+        - DELETE
+      allowed-origins:
+        - "*"
+
+logging:
+  level:
+    root: info        # Set this as needed for debugging

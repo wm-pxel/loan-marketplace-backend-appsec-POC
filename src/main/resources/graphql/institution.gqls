@@ -1,0 +1,48 @@
+extend type Query {
+    allInstitutions: [Institution!]!
+    getParticipantsNotOnDeal(dealUid: String): [Institution!]!
+    getEventParticipantsNotOnDeal(dealUid: String): [Institution!]!
+    getInstitutionByUid(uid: String): Institution!
+    getConfidentialityAgreementByInstitutionUid(uid: String): ConfidentialityAgreement
+    getProviderData(email: String!): ProviderData!
+}
+
+extend type Mutation {
+    createInstitution(input: InstitutionInput!): Institution!
+    updateInstitution(input: InstitutionInput!): Institution!
+    deleteInstitution(institutionUid: String!): Institution
+    createConfidentialityAgreement(institutionUid: String!, description: String!): ConfidentialityAgreement
+    createInstitutionAndConfidentialityAgreement(input: InstitutionInput!, description: String!): Institution!
+    updateInstitutionAndConfidentialityAgreement(input: InstitutionInput!, description: String): Institution!
+}
+
+type ProviderData {
+    ssoIndicator: Boolean!
+    providerName: String
+}
+
+type Institution {
+    uid: String
+    name: String
+    brandName: String
+    active: String!
+    owner: String
+    permissionSet: String
+    dealCount: Int!
+    memberCount: Int!
+    ssoFlag: String!
+    billingCode: BillingCode
+}
+
+type ConfidentialityAgreement {
+    id: Int
+    description: String
+}
+
+input InstitutionInput {
+    uid: String
+    name: String
+    brandName: String
+    active: String!
+    permissionSet: String
+}

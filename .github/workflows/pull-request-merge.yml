@@ -1,0 +1,89 @@
+name: Deploy to QA on PR Merge
+
+on:
+  push:
+    branches: main
+
+jobs:
+  deploy-to-qa:
+    environment: qa
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+  
+      - name: Get current version
+        shell: bash
+        run: echo ::set-output name=version::$(git describe --abbrev=0 --tags)
+  
+      - name: Create new tag
+        id: create_tag
+        uses: anothrNick/github-tag-action@1.67.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+          DEFAULT_BUMP: patch
+
+      - name: Checkout code with latest tag
+        uses: actions/checkout@v4
+        with: 
+          ref: ${{ steps.create_tag.outputs.new_tag }}
+
+      - name: Register credentials
+        run: "mkdir -p ~/.aws \
+          && touch ~/.aws/credentials \
+          && echo '[default]' > ~/.aws/credentials \
+          && echo 'aws_access_key_id = ${{ secrets.AWS_ACCESS_KEY_ID }}' >> ~/.aws/credentials \
+          && echo 'aws_secret_access_key = ${{ secrets.AWS_SECRET_ACCESS_KEY }}' >> ~/.aws/credentials \
+          && echo '[default]' > ~/.aws/config
+          && echo 'region = ${{ secrets.AWS_DEFAULT_REGION }}' >> ~/.aws/config \
+          && echo 'output = json' >> ~/.aws/config"
+
+      - name: Build and push image to ecr
+        run: |
+          aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 710894263335.dkr.ecr.us-east-1.amazonaws.com
+          docker build --platform linux/amd64 -f docker/deployment/Dockerfile -t 710894263335.dkr.ecr.us-east-1.amazonaws.com/lm-backend-qa:${{ steps.create_tag.outputs.new_tag }} .
+          docker push 710894263335.dkr.ecr.us-east-1.amazonaws.com/lm-backend-qa:${{ steps.create_tag.outputs.new_tag }}
+          aws secretsmanager update-secret --secret-id "lm-backend-image-tag-qa" --secret-string "{\"tag\": \"${{ steps.create_tag.outputs.new_tag }}\"}" --output json
+
+      - uses: hashicorp/setup-terraform@v2
+        with:
+          terraform_version: 1.5.7
+
+      - name: Terraform shared init
+        working-directory: tf-shared
+        shell: bash
+        run: |
+          terraform init -upgrade -backend-config=shared.aws.tfbackend -reconfigure
+
+      - name: Terraform shared plan
+        working-directory: tf-shared
+        shell: bash
+        run: |
+          terraform plan -var-file=shared.tfvars
+
+      - name: Terraform shared apply
+        if: true
+        working-directory: tf-shared
+        shell: bash
+        run: |
+          terraform apply -var-file=shared.tfvars -auto-approve
+
+      - name: Terraform init
+        working-directory: tf
+        shell: bash
+        run: |
+          terraform init -upgrade -backend-config=qa.aws.tfbackend -reconfigure
+
+      - name: Terraform plan
+        working-directory: tf
+        shell: bash
+        run: |
+          terraform plan -var-file=qa.tfvars
+
+      - name: Terraform apply
+        if: true
+        working-directory: tf
+        shell: bash
+        run: |
+          terraform apply -var-file=qa.tfvars -auto-approve

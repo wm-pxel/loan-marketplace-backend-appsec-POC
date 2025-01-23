@@ -1,0 +1,51 @@
+type Query {
+    getRolesByUserUid(uid: String): [Role]!
+    getCurrentUser: User!
+    getUsersByInstitutionUid(uid: String): [User]!
+    getDealMemberUsersAvailableByDealUid(uid: String): [User]!
+    getDealMemberUsersByDealUid(uid: String): [User!]!
+    getUserByUid(uid: String): User!
+    getEndUserAgreement: EndUserAgreement!
+    getSignedEndUserAgreement: EndUserAgreement!
+}
+
+type Mutation {
+    createUser(input: UserInput!): User!
+    updateUser(input: UserInput!): User!
+    deleteUser(userUid: String!): User
+
+    createInstitutionUserInvite(input: UserInput!): User!
+
+    addRoleToUser(userUid: String!, roleId: Int!): User!
+    deleteRoleFromUser(userUid: String!, roleId: Int!): User!
+    agreeToEndUserAgreement(euaId: Int!): Boolean!
+}
+
+type EndUserAgreement {
+    id: Int!
+    content: String!
+    billingCode: BillingCode
+    createdDate: String!
+}
+
+type User {
+    uid: String!
+    institution: Institution!
+    firstName: String!
+    lastName: String!
+    roles: [Role!]!
+    email: String!
+    inviteStatus: InviteStatus
+    active: String!
+}
+
+input UserInput {
+    uid: String
+    institution: UidInput
+    firstName: String
+    lastName: String
+    roles: [RoleInput]
+    email: String
+    password: String
+    active: String
+}

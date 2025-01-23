@@ -1,0 +1,28 @@
+extend type Query {
+    allActivityTypes: [ActivityType]!
+
+    getActivitiesByDealUid(uid: String): [Activity]!
+}
+
+type ActivityCategory {
+    id: Int!
+    name: String!
+}
+
+type ActivityType {
+    id: Int!
+    name: String!
+    category: ActivityCategory!
+}
+
+type Activity {
+    id: Int!
+    deal: Deal!
+    event: Event
+    participant: Institution
+    activityType: ActivityType!
+    json: String!
+    source: String!
+    createdBy: User!
+    createdDate: String!
+}

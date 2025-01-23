@@ -1,0 +1,31 @@
+extend type Query {
+    getFeatureFlags: [FeatureFlag!]!
+    getFeatureFlagById(id: Int): FeatureFlag!
+    getFeatureFlagByFeatureName(featureName: String): FeatureFlag!
+}
+
+extend type Mutation {
+    createFeatureFlag(input: FeatureFlagInput!): FeatureFlag!
+    updateFeatureFlag(input: FeatureFlagInput!): FeatureFlag!
+    deleteFeatureFlag(id: Int): FeatureFlag
+    deleteAllFeatureFlags: [FeatureFlag]
+}
+
+
+type FeatureFlag {
+    id: Int!
+    featureName: String!
+    description: String!
+    isEnabled: String!
+    createdBy: User!
+    createdDate: String!
+    updatedBy: User!
+    updatedDate: String!
+}
+
+input FeatureFlagInput {
+    id: Int
+    featureName: String
+    description: String
+    isEnabled: String
+}
